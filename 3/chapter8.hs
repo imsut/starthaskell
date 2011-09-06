@@ -171,31 +171,27 @@ factor    = do symbol "("
                return e
                +++ natural
 
--- inefficient parsing
-expr'   :: Parser Int
-expr'   = do t <- term'
-             symbol "+"
-             e <- expr'
-             return (t + e)
-             +++ do term'
-
-term'   :: Parser Int
-term'   = do f <- factor'
-             symbol "*"
-             t <- term'
-             return (f * t)
-             +++ do factor'
-
-factor' :: Parser Int
-factor' = do symbol "("
-             e <- expr'
-             symbol ")"
-             return e
-             +++ natural
-
 eval    :: String -> Int
 eval xs    = case parse expr xs of
     [(n, [])]   -> n
     [(_, out)]  -> error("unused input " ++ out)
     _           -> error "invalid input"
+
+-- 8.8
+{-
+ - expr ::= (expr - nat | nat)
+ -}
+
+expr'   :: Parser Int
+expr'   = do n <- natural
+             ns <- many (do symbol "-"
+                            natural)
+             return $ foldl (-) n ns
+
+eval'       :: String -> Int
+eval' xs    = case parse expr' xs of
+    [(n, [])]   -> n
+    [(_, out)]  -> error("unused input " ++ out)
+    _           -> error "invalid input"
+
 
