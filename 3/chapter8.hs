@@ -140,7 +140,10 @@ expr    = do t <- term
              do symbol "+"
                 e <- expr
                 return (t + e)
-                +++ return t
+                +++ do symbol "-"
+                       e <- expr
+                       return (t - e)
+                       +++ return t
 
 term    :: Parser Int
 term    = do
@@ -149,7 +152,10 @@ term    = do
         symbol "*"
         t <- term
         return (f * t)
-        +++ return f
+        +++ do symbol "/"
+               t <- term
+               return (f `div` t)
+               +++ return f
 
 factor    :: Parser Int
 factor    = do symbol "("
