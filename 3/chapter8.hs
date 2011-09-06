@@ -136,7 +136,7 @@ p2 = do
     return (n:ns)
 
 expr    :: Parser Int
-expr    = do t <- term
+expr    = do t <- pow
              do symbol "+"
                 e <- expr
                 return (t + e)
@@ -144,6 +144,13 @@ expr    = do t <- term
                        e <- expr
                        return (t - e)
                        +++ return t
+
+pow     :: Parser Int
+pow     = do t <- term
+             symbol "^"
+             p <- pow
+             return (t ^ p)
+             +++ term
 
 term    :: Parser Int
 term    = do
