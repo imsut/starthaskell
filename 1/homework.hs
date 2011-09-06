@@ -3,6 +3,7 @@
 magComp :: Float -> Float -> Float
 magComp a b = (10 ** (a - b)) ** 1.5
 
+test1 = magComp 9 7
 
 -- Exercise 2 ------------------------------------------------------------
 approxEq :: Float -> Float -> Float -> Bool
@@ -11,6 +12,12 @@ approxEq delta v1 v2 = abs(v1 - v2) < abs(delta)
 approxEq' = approxEq 0.0001
 approxZero = approxEq' 0
 
+test2 = [
+	approxEq 0.01 0 0.01,
+   	approxEq 0.01 0 0.0099,
+   	approxEq 0.001 (22 / 7) pi,
+   	approxEq 0.01 (22 / 7) pi
+	]
 
 -- Exercise 3 ------------------------------------------------------------
 compLevel :: (Int, Int) -> Float -> Int -> Float -> Float -> Float
@@ -24,7 +31,6 @@ test3 = [
       compLevel (720, 480) (30000 / 1001) (120 * 60) 128 700,
       compLevel (352, 288) 25 (120 * 60) 128 700
       ]
-
 
 -- Exercise 4 ------------------------------------------------------------
 revmid :: [a] -> [a]
