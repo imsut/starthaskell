@@ -14,11 +14,11 @@ approxZero = approxEq' 0
 
 -- Exercise 3 ------------------------------------------------------------
 compLevel :: (Int, Int) -> Float -> Int -> Float -> Float -> Float
-compLevel (w, h) fps len audio fileSize = (imageSizeB + audioSizeB) / fileSizeB
-	  where
-		imageSizeB = fromIntegral ((24 `div` 8) * w * h) * fps * fromIntegral len
-		audioSizeB = 1000 * audio * fromIntegral len
-		fileSizeB = 1024 * 1024 * fileSize
+compLevel (w, h) fps len audio fileSize = uncompVideoBR / compVideoBR
+	where
+		uncompVideoBR = fromIntegral (w * h * 24) * fps
+		compVideoBR = totalCompBR - audio * 1000
+		totalCompBR = fileSize * 1024 * 1024 * 8 / fromIntegral len
 
 test3 = [
       compLevel (720, 480) (30000 / 1001) (120 * 60) 128 700,
