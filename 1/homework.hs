@@ -54,7 +54,8 @@ isValidTP :: (Float, Float, Float)  -- vertex1 (X,Y,Z)
           -> (Float, Float, Float)  -- vertex6 (X,Y,Z)
           -> Bool                   -- True if order is correct
 
-isValidTP v1 v2 v3 v4 v5 v6 = approxVEq xp164 xp253 && xp164 ... (vec v1 v2) > 0
+isValidTP v1 v2 v3 v4 v5 v6 = approxVEq xp164 xp253 &&
+			      approxEq' (xp164 ... (vec v1 v2)) ((size xp164) * (size v12))
 	  where
 		-- approxmate vector equal
 		approxVEq (x1, y1, z1) (x2, y2, z2) =
@@ -72,8 +73,13 @@ isValidTP v1 v2 v3 v4 v5 v6 = approxVEq xp164 xp253 && xp164 ... (vec v1 v2) > 0
 		(***) :: (Float, Float, Float) -> (Float, Float, Float) -> (Float, Float, Float)
 		(a1, a2, a3) *** (b1, b2, b3) = (a2 * b3 - a3 * b2, a3 * b1 - a1 * b3, a1 * b2 - a2 * b1)
 
+		-- vector size
+		size :: (Float, Float, Float) -> Float
+		size (x, y, z) = sqrt $ x^2 + y^2 + z^2
+
 		xp164 = (vec v1 v6) *** (vec v1 v4)
 		xp253 = (vec v2 v5) *** (vec v2 v3)
+		v12 = (vec v1 v2)
 
 test5 = [
     isValidTP (2,0,0) (2,2,0) (0,2,2) (0,0,2) (-2,2,0) (-2,0,0),
